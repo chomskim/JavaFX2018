@@ -301,7 +301,7 @@ public class GrimPanPaneView extends VBox implements InvalidationListener {
 
 		String inputVal = JOptionPane.showInputDialog("Stroke Width", "1");
 		if (inputVal!=null){
-			model.setShapeStrokeWidth(Float.parseFloat(inputVal));
+			model.setShapeStrokeWidth(Double.parseDouble(inputVal));
 		}
 		else {
 			model.setShapeStrokeWidth(1f);

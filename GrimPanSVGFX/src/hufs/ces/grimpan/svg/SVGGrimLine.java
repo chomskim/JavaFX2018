@@ -20,7 +20,7 @@ public class SVGGrimLine extends SVGGrimShape {
 				lin.getStartX(), lin.getStartY(), lin.getEndX(), lin.getEndY());
 		svgSB.append(coords);
 		
-		svgSB.append(this.getSVGStyleString());
+		svgSB.append(SVGUtils.getSVGStyleAttribute(this.getShape()));
 		svgSB.append(" />");
 		return svgSB.toString();
 	}

@@ -28,14 +28,24 @@ public class SVGGrimPolygon extends SVGGrimShape {
 		svgSB.append(' ');
 		
 		
-		svgSB.append(this.getSVGStyleString());
+		svgSB.append(SVGUtils.getSVGStyleAttribute(this.getShape()));
 		svgSB.append(" />");
 		return svgSB.toString();
 	}
 	@Override
 	public Path2D getPath2DShape() {
 		Path2D pa = new Path2D.Double();
+		Polygon poly = (Polygon)getShape();
+		ObservableList<Double> points = poly.getPoints();
 		
+		for (int i=0; i<points.size(); i+=2) {
+			if (i==0) {
+				pa.moveTo(points.get(i), points.get(i+1));
+				continue;
+			}
+			pa.lineTo(points.get(i), points.get(i+1));
+		}
+		pa.closePath();
 		return pa;
 	}
 	

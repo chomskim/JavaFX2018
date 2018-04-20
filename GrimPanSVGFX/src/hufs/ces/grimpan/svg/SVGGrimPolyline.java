@@ -29,14 +29,25 @@ public class SVGGrimPolyline extends SVGGrimShape {
 		svgSB.append(' ');
 		
 		
-		svgSB.append(this.getSVGStyleString());
+		svgSB.append(SVGUtils.getSVGStyleAttribute(this.getShape()));
 		svgSB.append(" />");
 		return svgSB.toString();
 	}
 	@Override
 	public Path2D getPath2DShape() {
-		// TODO Auto-generated method stub
-		return null;
+		Path2D pa = new Path2D.Double();
+		Polyline poly = (Polyline)getShape();
+		ObservableList<Double> points = poly.getPoints();
+		
+		for (int i=0; i<points.size(); i+=2) {
+			if (i==0) {
+				pa.moveTo(points.get(i), points.get(i+1));
+				continue;
+			}
+			pa.lineTo(points.get(i), points.get(i+1));
+		}
+		
+		return pa;
 	}
 	
 	public static void main(String[] args) {

@@ -1,15 +1,24 @@
 package hufs.ces.grimpan.core;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-import javax.swing.JFileChooser;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.InputSource;
 
 import hufs.ces.grimpan.command.AddCommand;
 import hufs.ces.grimpan.command.Command;
 import hufs.ces.grimpan.command.MoveCommand;
+import hufs.ces.grimpan.svg.SVGGrimPath;
 import hufs.ces.grimpan.svg.SVGGrimShape;
+import hufs.ces.grimpan.svg.SVGUtils;
+import hufs.ces.grimpan.svg.SaxSVGPathParseHandler;
+import javafx.collections.ObservableList;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -33,39 +42,32 @@ public class GrimPanController {
 
 		String fileName = selFile.getName();
 
-		readShapeFromSVGSaveFile(selFile);
 		model.setSaveFile(selFile);
+		readShapeFromSVGSaveFile(selFile);
 		view.parentStage.setTitle("GrimPan - "+fileName);
 		view.drawPane.redraw();
 	}
 
-	public void readShapeFromSVGSaveFile(File saveFile) {
-		/*
-		model.setSaveFile(saveFile);
-		model.attsMapList = new ArrayList<HashMap<String, String>>();
-		SaxSVGParseHandler saxTreeHandler = new SaxSVGParseHandler(model); 
+	void readShapeFromSVGSaveFile(File saveFile) {
+
+		SaxSVGPathParseHandler saxTreeHandler = new SaxSVGPathParseHandler(); 
 
 		try {
 			SAXParserFactory saxf = SAXParserFactory.newInstance();
-			//saxf.setFeature("http://xml.org/sax/features/validation", false);
+			
 			SAXParser saxParser = saxf.newSAXParser();
-			saxParser.parse(new InputSource(new FileInputStream(model.getSaveFile())), saxTreeHandler);
+			saxParser.parse(new InputSource(new FileInputStream(saveFile)), saxTreeHandler);
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		int drawCount = 0;
-		for (HashMap<String, String> map:model.attsMapList){
-
-			ArrayList<GrimShape> gslist = SVG2GrimShapeTranslator.translateSVG2Shape(map);
-			//System.out.println("shapelist size="+view.gmodel.shapeList.size());
-			if (gslist != null && gslist.size()!=0){
-				model.shapeList.addAll(gslist);
-			}
-			drawCount++;
-			//System.out.println("drawcount="+drawCount);
+		
+		view.initDrawPane();
+		
+		ObservableList<SVGGrimShape> gshapeList = saxTreeHandler.getPathList();
+		for (SVGGrimShape gsh:gshapeList) {
+			model.shapeList.add(gsh);
 		}
-		 */
 	}
 	void saveAction() {
 		if (model.getSaveFile()==null){
@@ -90,7 +92,7 @@ public class GrimPanController {
 
 	}
 
-	public void saveGrimPanSVGShapes(File saveFile){
+	void saveGrimPanSVGShapes(File saveFile){
 		PrintWriter svgout = null;
 		try {
 			svgout = new PrintWriter(saveFile);

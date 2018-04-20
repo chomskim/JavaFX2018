@@ -36,33 +36,4 @@ public class Utils {
 		return ext;
 	}
 
-	static public Path2D getPath2DFromSwingShape(Shape sh) {
-		
-		Path2D pa = new Path2D.Double();
-		PathIterator iter = sh.getPathIterator(null);
-		
-		double[] seg = new double[6];
-		while (!iter.isDone()) {
-			int segType = iter.currentSegment(seg);
-			switch (segType) {
-			case PathIterator.SEG_MOVETO:
-				pa.moveTo(seg[0], seg[1]);
-				break;
-			case PathIterator.SEG_LINETO:
-				pa.lineTo(seg[0], seg[1]);
-				break;
-			case PathIterator.SEG_QUADTO:
-				pa.quadTo(seg[0], seg[1], seg[2], seg[3]);
-				break;
-			case PathIterator.SEG_CUBICTO:
-				pa.curveTo(seg[0], seg[1], seg[2], seg[3], seg[4], seg[5]);
-				break;
-			case PathIterator.SEG_CLOSE:
-				pa.closePath();
-				break;
-			}
-			iter.next();
-		}
-		return pa;
-	}
 }

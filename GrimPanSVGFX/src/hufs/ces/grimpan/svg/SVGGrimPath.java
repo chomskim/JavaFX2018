@@ -52,12 +52,12 @@ public class SVGGrimPath extends SVGGrimShape {
 			}
 			else if (pe instanceof CubicCurveTo) {
 				CubicCurveTo c = (CubicCurveTo)pe;
-				coords = String.format("A%.1f %.1f %.1f %.1f %.1f %.1f ",
+				coords = String.format("C%.1f %.1f %.1f %.1f %.1f %.1f ",
 						c.getControlX1(), c.getControlY1(), c.getControlX2(), c.getControlY2(), c.getX(), c.getY()); 
 			}
 			else if (pe instanceof QuadCurveTo) {
 				QuadCurveTo q = (QuadCurveTo)pe;
-				coords = String.format("A%.1f %.1f %.1f %.1f ",
+				coords = String.format("Q%.1f %.1f %.1f %.1f ",
 						q.getControlX(), q.getControlY(), q.getX(), q.getY()); 
 			}
 			else if (pe instanceof ClosePath) {
@@ -70,7 +70,7 @@ public class SVGGrimPath extends SVGGrimShape {
 		svgSB.append(' ');
 		
 		
-		svgSB.append(this.getSVGStyleString());
+		svgSB.append(SVGUtils.getSVGStyleAttribute(this.getShape()));
 		svgSB.append(" />");
 		return svgSB.toString();
 	}
@@ -99,7 +99,8 @@ public class SVGGrimPath extends SVGGrimShape {
 				//String largeFlag = a.isLargeArcFlag() ? "1" : "0";
 				//String sweepFlag = a.isSweepFlag() ? "1" : "0";
 				//coords = String.format("A%.1f %.1f %.1f %s %s %.1f %.1f ",
-				//		a.getRadiusX(), a.getRadiusY(), a.getXAxisRotation(), largeFlag, sweepFlag, a.getX(), a.getY()); 
+				//		a.getRadiusX(), a.getRadiusY(), a.getXAxisRotation(), largeFlag, sweepFlag, a.getX(), a.getY());
+				pa.lineTo(a.getX(), a.getY());
 			}
 			else if (pe instanceof CubicCurveTo) {
 				CubicCurveTo c = (CubicCurveTo)pe;
@@ -129,6 +130,8 @@ public class SVGGrimPath extends SVGGrimShape {
 		sh.setStrokeWidth(5.2);
 		sh.setStroke(new Color(0.1, 0.1, 0.1, 0));
 
-		System.out.println(new SVGGrimPath(sh).getSVGShapeString());
+		SVGGrimShape gsh = new SVGGrimPath(sh); 
+		System.out.println(gsh.getSVGShapeString());
+		System.out.println(SVGUtils.convertShapeToSVGPath(gsh));
 	}
 }

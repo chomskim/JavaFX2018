@@ -3,7 +3,6 @@ package hufs.ces.grimpan.svg;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 
-import hufs.ces.grimpan.core.Utils;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 
@@ -22,7 +21,7 @@ public class SVGGrimEllipse extends SVGGrimShape {
 				ellip.getCenterX(), ellip.getCenterY(), ellip.getRadiusX(), ellip.getRadiusY());
 		svgSB.append(coords);
 		
-		svgSB.append(this.getSVGStyleString());
+		svgSB.append(SVGUtils.getSVGStyleAttribute(this.getShape()));
 		svgSB.append(" />");
 		return svgSB.toString();
 	}
@@ -35,7 +34,7 @@ public class SVGGrimEllipse extends SVGGrimShape {
 		double h = el.getRadiusY() * 2;
 		Ellipse2D ellipse = new Ellipse2D.Double(x, y, w, h);
 
-		Path2D pa = Utils.getPath2DFromSwingShape(ellipse);
+		Path2D pa = SVGUtils.getPath2DFromSwingShape(ellipse);
 
 		return pa;
 	}
@@ -46,6 +45,9 @@ public class SVGGrimEllipse extends SVGGrimShape {
 		sh.setStrokeWidth(5.2);
 		sh.setStroke(new Color(0.5, 0.4, 0.1, 0));
 
-		System.out.println(new SVGGrimEllipse(sh).getSVGShapeString());
+		SVGGrimShape gsh = new SVGGrimEllipse(sh); 
+		System.out.println(gsh.getSVGShapeString());
+		System.out.println(
+				SVGUtils.getSVGElementFromSVGPath(SVGUtils.convertShapeToSVGPath(gsh)));
 	}
 }

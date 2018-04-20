@@ -48,7 +48,7 @@ public class GrimPanModel implements Observable {
 		};
 	public ShapeBuilder sb = null;
 	
-	private float shapeStrokeWidth = 10f;
+	private double shapeStrokeWidth = 10;
 	private Color shapeStrokeColor = Color.BLACK;
 	private boolean shapeStroke = true;
 	private boolean shapeFill = false;
@@ -258,14 +258,14 @@ public class GrimPanModel implements Observable {
 	/**
 	 * @return the shapeStrokeWidth
 	 */
-	public float getShapeStrokeWidth() {
+	public double getShapeStrokeWidth() {
 		return shapeStrokeWidth;
 	}
 
 	/**
 	 * @param shapeStrokeWidth the shapeStrokeWidth to set
 	 */
-	public void setShapeStrokeWidth(float shapeStrokeWidth) {
+	public void setShapeStrokeWidth(double shapeStrokeWidth) {
 		this.shapeStrokeWidth = shapeStrokeWidth;
 	}
 
